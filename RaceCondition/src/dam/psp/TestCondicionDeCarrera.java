@@ -1,14 +1,18 @@
 package dam.psp;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 class Contador {
-	public static volatile int cuenta = 0;	
+	// public static volatile int cuenta = 0;
+	public final static AtomicInteger cuenta = new AtomicInteger(0);	
 }
 
 class Sumador extends Thread {
 	@Override
 	public void run() {
-		for (int i = 0; i < 10000; i++) {
-			Contador.cuenta++;
+		for (int i = 0; i < 999999; i++) {
+			// Contador.cuenta++;
+			Contador.cuenta.incrementAndGet();
 		}
 	}
 }
@@ -16,7 +20,8 @@ class Restador extends Thread{
 	@Override
 	public void run() {
 		for (int i = 0; i < 5000; i++) {
-			Contador.cuenta--;
+			// Contador.cuenta--;
+			Contador.cuenta.decrementAndGet();
 		}
 	}
 }
