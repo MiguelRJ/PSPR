@@ -3,13 +3,24 @@ package dam.psp;
 class DatoCompartido {
 	public static int c1 = 0;
 	public static int c2 = 0;
+	
+	private static final Object mutex1 = new Object();// monitor semaforo binario 
+	private static final Object mutex2 = new Object();
 
 	public static void incrementarC1() {
+		// Seccion critica 1
+		synchronized (mutex1) {
 		c1++;
+		}
+		// Fin de Seccion critica
 	}
 
 	public static void incrementarC2() {
+		// Seccion critica 2
+		synchronized (mutex2) {
 		c2++;
+		}
+		// Fin de Seccion critica
 	}
 }
 
