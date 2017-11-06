@@ -3,7 +3,8 @@ package dam.psp;
 public class PruebaBuferCompartido {
 
 	public static void main(String[] args) {
-		Bufer bcompartido = new BuferCompartido();
+		//Bufer bcompartido = new BuferCompartido();
+		Bufer bcompartido = new BufferCompartidoCircular();
 		
 		Productor prod = new Productor(bcompartido, 10);
 		Consumidor cons1 = new Consumidor(bcompartido, 6);

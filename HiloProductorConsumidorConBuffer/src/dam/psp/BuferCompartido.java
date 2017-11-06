@@ -7,13 +7,34 @@ public class BuferCompartido implements Bufer {
 	
 	@Override
 	public synchronized int leer() {
-		contadorOcupado--;
-		return contadorOcupado;
+		while (contadorOcupado == 0) {
+			mostrarEstado(Thread.currentThread().getName() + " trata de leer: " + bufer);
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		mostrarEstado(Thread.currentThread().getName() + " lee: " + bufer);
+		contadorOcupado = 0;
+		this.notify();
+		return bufer;
 	}
 
 	@Override
 	public synchronized void escribir(int valor) {
-		contadorOcupado++;
+		while (contadorOcupado == 1) {
+			mostrarEstado(Thread.currentThread().getName() + " trata de escribir: " + valor);
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		bufer=valor;
+		contadorOcupado = 1;
+		mostrarEstado(Thread.currentThread().getName() + " escribe: " + bufer);
+		this.notify();
 	}
 
 	@Override

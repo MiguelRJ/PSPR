@@ -13,10 +13,13 @@ public class Consumidor extends Thread{
 	@Override
 	public void run() {
 		int suma = 0;
+		int valor = 0;
 		for (int i = 0; i < veces; i++) {
 			try {
 				Thread.sleep((int)(Math.random()*3001));
-				suma += compartido.leer();
+				valor = compartido.leer();
+				suma += valor;
+				//System.out.println(getName() + " valor: " + valor);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
