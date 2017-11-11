@@ -60,7 +60,7 @@ public class Filosofo implements Runnable {
 				}*/
 				//System.out.println("El filosofo " + numeroDeFisolofo + " Espera Palillos [" +palilloIzquierda + "] [" + palilloDerecha + "]");
 			while ( cena.getPalillo(palilloIzquierda).enUso || cena.getPalillo(palilloDerecha).enUso ) {
-
+				
 			}
 			cogerPalillos();
 			comer();
