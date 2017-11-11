@@ -7,18 +7,23 @@ public class Cena {
 	
 	public Cena(int numComensales) {
 		this.comensales = numComensales;
+		palillos = new Palillo[numComensales];
 		for (int i = 0; i < comensales; i++) {
 			palillos[i] = new Palillo(i);
 		}
 	}
-
-	public Palillo getPalilloDerecha(int numComensal) {
-		
+	
+	public synchronized Palillo getPalillo (int numComensal) {
 		return palillos[numComensal];
 	}
-
-	public Palillo getPalilloIzquierda(int numComensal) {
-
-		return palillos[(numComensal-1)%comensales];
+	
+	public int getPalilloIzquierda(int numComensal) {
+		return palillos[(numComensal+1)%comensales].numero;
 	}
+
+	public int getPalilloDerecha(int numComensal) {
+		return palillos[numComensal].numero;
+	}
+
+	
 }
