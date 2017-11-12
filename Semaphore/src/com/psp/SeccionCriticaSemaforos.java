@@ -40,7 +40,7 @@ public class SeccionCriticaSemaforos {
 		int n_sum = Integer.parseInt(args[0]);
 		sumadores = new Sumador[n_sum];
 		for (int i = 0; i < n_sum; i++) {
-			sumadores[i] = new Sumador(100000000, i, semaphore);
+			sumadores[i] = new Sumador(100, i, semaphore);
 			sumadores[i].start();
 		}
 
