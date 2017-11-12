@@ -1,8 +1,10 @@
 package mrj.Rel1.E2;
 
 import java.util.concurrent.Semaphore;
-
-
+/*
+ * hacer que el que haga las repeticiones sea el main
+ * y en el main hacer leer.start .join y escribir.start
+ */
 class Bufer {
 	public static int datos = 0;
 }
@@ -16,6 +18,11 @@ class Lector extends Thread {
 		semaforo = sem;
 	}
 	
+	public int leer() {
+		System.out.println("Datos leido: "+Bufer.datos);
+		return Bufer.datos;
+	}
+	
 	@Override
 	public void run() {
 		for (int i = 0; i < maxDatos; i++) {
@@ -24,8 +31,50 @@ class Lector extends Thread {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			leer();
+			semaforo.release();
 		}
 		
+	}
+}
+class Escritor extends Thread {
+	int maxDatos;
+	Semaphore semaforo;
+	
+	public Escritor(int hasta, Semaphore sem) {
+		maxDatos = hasta;
+		semaforo = sem;
+	}
+	
+	public int escribir() {
+		System.out.println("Datos escrito: "+Bufer.datos);
+		return Bufer.datos++;
+	}
+	
+	@Override
+	public void run() {
+		for (int i = 0; i < maxDatos; i++) {
+			try {
+				semaforo.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			escribir();
+			semaforo.release();
+		}
+		
+	}
+}
+
+public class Check {
+	public static void main(String[] args) {
+		int hasta = Integer.parseInt(args[0]);
+		Semaphore sem = new Semaphore(1);
+		Lector lector = new Lector(hasta, sem);
+		Escritor escritor = new Escritor(hasta, sem);
+		
+		lector.start();
+		escritor.start();
 	}
 }
 
