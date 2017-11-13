@@ -25,8 +25,14 @@ public class Filosofo implements Runnable {
 	}
 
 	public void cogerPalillos() {
-		cena.getPalillo(palilloIzquierda).coger();
-		cena.getPalillo(palilloDerecha).coger();
+		if(numeroDeFisolofo%2 == 0) {
+			cena.getPalillo(palilloIzquierda).coger();
+			cena.getPalillo(palilloDerecha).coger();
+		} else if(numeroDeFisolofo%2 == 1) {
+			cena.getPalillo(palilloDerecha).coger();
+			cena.getPalillo(palilloIzquierda).coger();
+		}
+		
 		System.out.println("Filosofo: " + numeroDeFisolofo + " cojo Palillos [" + palilloIzquierda + "] [" + palilloDerecha + "]");
 	}
 
@@ -34,7 +40,6 @@ public class Filosofo implements Runnable {
 		cena.getPalillo(palilloIzquierda).soltar();
 		cena.getPalillo(palilloDerecha).soltar();
 		System.out.println("Filosofo: " + numeroDeFisolofo + " suelto Palillos [" + palilloIzquierda + "] [" + palilloDerecha + "]");
-
 	}
 
 	public void comer() {
@@ -52,19 +57,10 @@ public class Filosofo implements Runnable {
 	public void run() {
 		for (int i = 0; i < veces; i++) {
 			pensar();				
-				/*if (cena.getPalilloIzquierda(numeroDeFisolofo).enUso) {
-					System.out.println("El filosofo " + numeroDeFisolofo + " Espera PalilloI [" + palilloIzquierda + "]");
-				}
-				if (cena.getPalilloDerecha(numeroDeFisolofo).enUso) {
-					System.out.println("El filosofo " + numeroDeFisolofo + " Espera PalilloD [" + palilloDerecha + "]");
-				}*/
-				//System.out.println("El filosofo " + numeroDeFisolofo + " Espera Palillos [" +palilloIzquierda + "] [" + palilloDerecha + "]");
-			while ( cena.getPalillo(palilloIzquierda).enUso || cena.getPalillo(palilloDerecha).enUso ) {
-				
-			}
 			cogerPalillos();
 			comer();
 			soltarPalillos();
 		}
+		System.out.println("El fisolofo " + numeroDeFisolofo + " ha terminado de cenar.");
 	}
 }

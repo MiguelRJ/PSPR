@@ -11,7 +11,7 @@ public class Simulacion {
 			Thread hilo = new Thread(new Filosofo(i, almuerzos, cena));
 			hilo.start();
 		}
-
+		
 	}
 
 }

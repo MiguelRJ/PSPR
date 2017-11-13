@@ -21,7 +21,7 @@ public class Arbitro {
 		return turno;
 	}
 
-	public boolean seAcabo() {
+	public synchronized boolean seAcabo() {
 		return acertado;
 	}
 
@@ -41,8 +41,8 @@ public class Arbitro {
 				acertado = true;
 				System.out.println("Jugador " + turno + " WINS!");
 			} else {
-				turno = (turno + 1) % numJugadores;
 				System.out.println("El jugador " + turno + " ha fallado con el numero: " + jugada);
+				turno = (turno + 1) % numJugadores;
 			}
 		}
 		notifyAll();

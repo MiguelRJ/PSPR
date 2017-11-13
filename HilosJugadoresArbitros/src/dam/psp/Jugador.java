@@ -12,10 +12,10 @@ public class Jugador extends Thread {
 
 	@Override
 	public void run() {
-		while (!arbitro.seAcabo()) {
+		while (!arbitro.seAcabo()) { // hilo puede comprobar un valor sucio, seAcabo tiene que estar sincronizado
 			arbitro.jugar(this.dorsal, 1 + (int) (arbitro.maximo * Math.random()));
 		}
-		System.out.println("El jugador " + dorsal + "ha dejado de jugar");
+		System.out.println("El jugador " + dorsal + " ha dejado de jugar");
 	}
 
 }

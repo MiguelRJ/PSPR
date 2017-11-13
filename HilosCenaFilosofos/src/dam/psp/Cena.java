@@ -13,8 +13,8 @@ public class Cena {
 		}
 	}
 	
-	public synchronized Palillo getPalillo (int numComensal) {
-		return palillos[numComensal];
+	public Palillo getPalillo (int numPalillo) {
+		return palillos[numPalillo];
 	}
 	
 	public int getPalilloIzquierda(int numComensal) {
@@ -24,6 +24,5 @@ public class Cena {
 	public int getPalilloDerecha(int numComensal) {
 		return palillos[numComensal].numero;
 	}
-
 	
 }

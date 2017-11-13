@@ -10,17 +10,22 @@ public class Palillo {
 		enUso = false;
 	}
 	
-	public void coger() {
-		if(enUso) {
-			System.out.println("palillo ["+numero+"] ocupado");
-		} else {
-			this.enUso = true;
+	public synchronized void coger() {
+		while (enUso) {
+			System.out.println("palillo ["+numero+"] en uso, espera");
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		
+		this.enUso = true;
+		System.out.println("palillo ["+numero+"] ocupado por "+Thread.currentThread().getName());
 	}
 	
-	public void soltar() {
+	public synchronized void soltar() {
 		this.enUso = false;
+		notify();
 		System.out.println("palillo ["+numero+"] soltado");
 	}
 
