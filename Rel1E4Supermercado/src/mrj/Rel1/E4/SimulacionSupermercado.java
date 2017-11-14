@@ -125,7 +125,7 @@ public class SimulacionSupermercado {
 			e.printStackTrace();
 		}
 		for (int i = 0; i < caja.length; i++) {
-			System.out.println(caja[i].resultado);
+			System.out.println("Factura de caja " + caja[i].numCaja + ": " + caja[i].resultado);
 		}
 		
 	}
