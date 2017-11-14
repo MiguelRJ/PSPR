@@ -1,25 +1,5 @@
 package mrj.Rel1.E1;
 
-public class Orden {
-
-	public static void main(String[] args) {
-		Saludar saludo1 = new Saludar("numero 1");
-		Saludar saludo2 = new Saludar("numero 2");
-		
-		/* Se fuerza poniendolo antes? 
-		 * Habra que hacer el .join()?*/
-		saludo2.start();
-		try {
-			saludo2.join();// Me aseguro que saludo 2 acabe antes de seguir.
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		saludo1.start();
-		System.out.println("Hilo principal acabado.");
-	}
-
-}
-
 class Saludar extends Thread {
 	
 	String name;
@@ -39,3 +19,23 @@ class Saludar extends Thread {
 	}
 	 
  }
+
+public class Orden {
+
+	public static void main(String[] args) {
+		Saludar saludo1 = new Saludar("numero 1");
+		Saludar saludo2 = new Saludar("numero 2");
+		
+		/* Se fuerza poniendolo antes? 
+		 * Habra que hacer el .join()?*/
+		saludo2.start();
+		try {
+			saludo2.join();// Me aseguro que saludo 2 acabe antes de seguir.
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		saludo1.start();
+		System.out.println("Hilo principal acabado.");
+	}
+
+}

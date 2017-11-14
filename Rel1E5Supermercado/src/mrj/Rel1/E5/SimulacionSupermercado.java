@@ -1,4 +1,4 @@
-package mrj.Rel1.E4;
+package mrj.Rel1.E5;
 
 import java.util.Random;
 
@@ -8,6 +8,30 @@ import java.util.Random;
  * 
  * Los clientes no van por cola, el notify avisa a que alguien nuevo entre
  */
+
+class Cola {
+	
+	int numCola;
+	int siguienteCola;
+	Cliente[] clientes;
+	
+	public Cola(int numClientes) {
+		clientes = new Cliente[numClientes];
+		numCola = 0;
+		siguienteCola = 0;
+	}
+	
+	public void ponerseEnCola(Cliente cliente) {
+		clientes[numCola] = cliente;
+		System.out.println("Cliente: "+cliente.numCliente + " Pos cola: "+numCola);
+		numCola++;
+	}
+	
+	public synchronized Cliente siguienteCola() {
+		//System.out.println("Siguiente en cola: "+clientes[siguienteCola].numCliente);
+		return clientes[siguienteCola++];
+	}
+}
 
 class Caja {
 
@@ -50,12 +74,14 @@ class Cliente extends Thread {
 
 	int numCliente;
 	Caja caja;
+	Cola cola;
 	boolean compraTerminada;
 
-	public Cliente(int numClientes, Caja cajas) {
+	public Cliente(int numClientes, Caja cajas, Cola colas) {
 		numCliente = numClientes;
 		caja = cajas;
 		compraTerminada = false;
+		cola = colas;
 	}
 
 	public void comprar() {
@@ -77,6 +103,10 @@ class Cliente extends Thread {
 	@Override
 	public void run() {
 		comprar();
+		cola.ponerseEnCola(this);
+		while (cola.siguienteCola() != Cliente.this) {
+			
+		}
 		caja.usarCaja();
 		pagarCaja();
 		caja.dejarCaja();
@@ -133,6 +163,7 @@ public class SimulacionSupermercado {
 		int numCajas = Integer.parseInt(args[0]);
 		int numClientes = Integer.parseInt(args[1]);
 
+		Cola cola = new Cola(numClientes);
 		Caja[] caja = new Caja[numCajas];
 		Cliente[] cliente = new Cliente[numClientes];
 
@@ -140,7 +171,7 @@ public class SimulacionSupermercado {
 			caja[i] = new Caja(i);
 		}
 		for (int i = 0; i < numClientes; i++) {
-			cliente[i] = new Cliente(i, caja[new Random().nextInt(caja.length)]);
+			cliente[i] = new Cliente(i, caja[new Random().nextInt(caja.length)],cola);
 		}
 
 		Supermercado supermercado = new Supermercado(caja, cliente);

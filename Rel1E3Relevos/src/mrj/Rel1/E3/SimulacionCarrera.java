@@ -1,12 +1,22 @@
 package mrj.Rel1.E3;
 
+/**
+ * Clase relevo que para coger y soltar un objeto bool de forma sincronizada
+ * @author Miguel Rodriguez Jimenez
+ */
 class Relevo {
+	
 	boolean relevo;
 	
 	public Relevo() {
 		relevo = false;
 	}
 	
+	/**
+	 * El corredor coge el relevo, 
+	 * si el relevo ya lo tiene otro entonces
+	 * espera hasta que le notifiquen que ha quedado libre
+	 */
 	public synchronized void cogerRelevo() {
 		while (relevo) {
 			try {
@@ -18,16 +28,29 @@ class Relevo {
 		relevo = true;
 	}
 	
+	/**
+	 * El corredor suelta el relevo
+	 * y notifica que lo ha soltado
+	 */
 	public synchronized void soltarRelevo() {
 		relevo = false;
 		notify();
 	}
 }
 
+/**
+ * Clase corredor que extiende de Thread
+ * Acciones del corredor:
+ * 		cogerRelevo()
+ * 		correr()
+ * 		soltarRelevo()
+ * @author Miguel Rodriguez Jimenez
+ *
+ */
 class Corredor extends Thread {
 	
 	String nombreCorredor;
-	Relevo relevo;
+	Relevo relevo; // Instancia del relevo de la carrera, es el mismo para todos los corredores
 	
 	public Corredor(int numCorredor, Relevo relevoCarrera) {
 		nombreCorredor = "Corredor numero: " + numCorredor;
@@ -62,9 +85,14 @@ class Corredor extends Thread {
 	}
 }
 
+/**
+ * Carrera tiene un array de corredores que echan a correr
+ * @author Miguel Rodriguez Jimenez
+ * 
+ */
 class Carrera extends Thread {
 	
-	Corredor[] corredor;
+	Corredor[] corredor; // La carrare tiene un array de corredores
 	
 	public Carrera(Corredor[] corredores) {
 		corredor = corredores;
@@ -81,20 +109,15 @@ class Carrera extends Thread {
 public class SimulacionCarrera {
 	public static void main(String[] args) {
 		
-		int numCorredores = Integer.parseInt(args[0]);
-		Corredor[] corredor = new Corredor[numCorredores];
-		Carrera carrera = new Carrera(corredor);
-		Relevo relevo = new Relevo();
-		for (int i = 0; i < numCorredores ; i++) {
+		int numCorredores = Integer.parseInt(args[0]); // El numero de corredores que tendra la carrera
+		Corredor[] corredor = new Corredor[numCorredores]; // El array de corredores
+		Carrera carrera = new Carrera(corredor); // La carrera
+		Relevo relevo = new Relevo(); // El relevo
+		
+		for (int i = 0; i < numCorredores ; i++) { 
 			corredor[i] = new Corredor(i,relevo);
 		}
 		carrera.start();
-		try {
-			carrera.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		
 	}
 }
