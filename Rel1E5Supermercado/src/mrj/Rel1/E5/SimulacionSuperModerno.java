@@ -156,7 +156,7 @@ class Supermercado extends Thread {
 	}
 }
 
-public class SimulacionSupermercado {
+public class SimulacionSuperModerno {
 
 	public static void main(String[] args) {
 

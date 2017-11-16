@@ -2,35 +2,39 @@ package mrj.Rel1.E4;
 
 import java.util.Random;
 
-/*
- * Como muestro el caja.resultado, 
- * como espero a que todos los clientes se hayan ido - Resuelto en metodo hayClientes() de supermercado
- * 
- * Los clientes no van por cola, el notify avisa a que alguien nuevo entre
- */
-
 class Caja {
 
 	int numCaja;
 	boolean ocupada;
 	int resultado;
 	String factura;
+	int[] colaClientes;
+	int ultimaPosCola;
+	int siguientePosCola;
 
-	public Caja(int numCajas) {
+	public Caja(int numCajas, int numClientes) {
 		numCaja = numCajas;
 		ocupada = false;
 		resultado = 0;
 		factura = "Caja: " + numCaja + "\n";
+		colaClientes = new int[numClientes];
+		ultimaPosCola = 0;
+		siguientePosCola = 0;
 	}
 
-	public synchronized void usarCaja() {
-		while (ocupada) {
+	public synchronized void usarCaja(int numCliente) {
+		colaClientes[ultimaPosCola++] = numCliente;
+		System.out.println("Nuevo en cola. Cliente: "+numCliente + " Caja: "+this.numCaja+ " Pos: "+(ultimaPosCola-1));
+		while (ocupada || colaClientes[siguientePosCola] != numCliente ) {
 			try {
+				System.out.println("[PRE] cliente " + numCliente + " y es turno de " + colaClientes[siguientePosCola]);
 				wait();
+				System.out.println("[POST] cliente " + numCliente + " y es turno de " + colaClientes[siguientePosCola]);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+		siguientePosCola++;
 		ocupada = true;
 	}
 
@@ -52,15 +56,15 @@ class Cliente extends Thread {
 	Caja caja;
 	boolean compraTerminada;
 
-	public Cliente(int numClientes, Caja cajas) {
-		numCliente = numClientes;
+	public Cliente(int numCliente, Caja cajas) {
+		this.numCliente = numCliente;
 		caja = cajas;
 		compraTerminada = false;
 	}
 
 	public void comprar() {
 		try {
-			Thread.sleep((long) Math.random());
+			sleep((long) new Random().nextInt(2000));
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -68,6 +72,11 @@ class Cliente extends Thread {
 
 	public void pagarCaja() {
 		caja.comprarCaja(new Random().nextInt(50), this);
+		try {
+			sleep((long) new Random().nextInt(2000));
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void salirSupermercado() {
@@ -77,7 +86,7 @@ class Cliente extends Thread {
 	@Override
 	public void run() {
 		comprar();
-		caja.usarCaja();
+		caja.usarCaja(numCliente);
 		pagarCaja();
 		caja.dejarCaja();
 		salirSupermercado();
@@ -137,7 +146,7 @@ public class SimulacionSupermercado {
 		Cliente[] cliente = new Cliente[numClientes];
 
 		for (int i = 0; i < numCajas; i++) {
-			caja[i] = new Caja(i);
+			caja[i] = new Caja(i,numClientes);
 		}
 		for (int i = 0; i < numClientes; i++) {
 			cliente[i] = new Cliente(i, caja[new Random().nextInt(caja.length)]);

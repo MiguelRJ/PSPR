@@ -9,7 +9,7 @@ class Saludar extends Thread {
 	}
 	
 	@Override
-	public void start() {
+	public void run() {
 		try {
 			sleep((long)(Math.random()));// Tiempo de espera aleatorio
 		} catch (InterruptedException e) {
@@ -26,8 +26,6 @@ public class Orden {
 		Saludar saludo1 = new Saludar("numero 1");
 		Saludar saludo2 = new Saludar("numero 2");
 		
-		/* Se fuerza poniendolo antes? 
-		 * Habra que hacer el .join()?*/
 		saludo2.start();
 		try {
 			saludo2.join();// Me aseguro que saludo 2 acabe antes de seguir.
@@ -35,6 +33,11 @@ public class Orden {
 			e.printStackTrace();
 		}
 		saludo1.start();
+		try {
+			saludo1.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		System.out.println("Hilo principal acabado.");
 	}
 
