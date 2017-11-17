@@ -8,8 +8,7 @@ public class Simulacion {
 		Cena cena = new Cena(comensales);
 		
 		for (int i = 0; i < comensales; i++) {
-			Thread hilo = new Thread(new Filosofo(i, almuerzos, cena));
-			hilo.start();
+			new Filosofo(i, almuerzos, cena);
 		}
 		
 	}
