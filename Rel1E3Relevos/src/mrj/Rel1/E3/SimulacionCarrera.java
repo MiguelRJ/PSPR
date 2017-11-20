@@ -1,5 +1,9 @@
 package mrj.Rel1.E3;
 
+/*
+ * Hacer un turno entre corredores
+ */
+
 /**
  * Clase relevo que para coger y soltar un objeto bool de forma sincronizada
  * @author Miguel Rodriguez Jimenez
@@ -65,7 +69,7 @@ class Corredor extends Thread {
 	public void correr() {
 		System.out.println(nombreCorredor + " esta corriendo...");
 		try {
-			sleep((long)Math.random());
+			Thread.sleep((long)Math.random());
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

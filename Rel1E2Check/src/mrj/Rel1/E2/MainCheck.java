@@ -1,5 +1,9 @@
 package mrj.Rel1.E2;
 
+/*
+ * hacer con monitor
+ */
+
 class Bufer {
 	int[] buferDatos;
 	final int tamanoBufer = 10000;
