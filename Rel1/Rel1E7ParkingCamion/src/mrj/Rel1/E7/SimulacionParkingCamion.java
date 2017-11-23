@@ -53,7 +53,7 @@ class Parking {
 	 * si la plaza esta ocupada entonces se vuelve a poner a 0
 	 * si el hueco libre es mayor al mayor 
 	 * guardo el nuevo hueco libre como mayor
-	 * @param int tamanoVehiculo para buscar hueco para el tamaño de un vehiculo concreto
+	 * @param int tamanoVehiculo para buscar hueco para el tamaï¿½o de un vehiculo concreto
 	 * @return true si el tamano del vehiculo es menor o igual al huecolibremayor, false si no
 	 */
 	boolean hayPlazaLibre(int tamanoVehiculo) { // deberia sincronizar?
@@ -109,7 +109,7 @@ class Parking {
 					for (int j = 0; j < tamanoVehiculo; j++) {
 						plazas[i - j].setOcupada(true); // esta plaza la marcamos como ocupada
 						plazas[i - j].setVehiculo(vehiculo); // a esta plaza le asignamos el vehiculo que queria entrar
-						plazasEncontradas[j] = plazas[i - j]; // y al array creado anterior mente le añadimos la plaza
+						plazasEncontradas[j] = plazas[i - j]; // y al array creado anterior mente le aï¿½adimos la plaza
 					}
 					vehiculo.plaza = plazasEncontradas; // al array de plaza que ocupa el vehiculo le asignamos el creado aqui
 					isPlazaEncontrada = true; // como ya hemos encontrado una plaza no necesitamos buscar mas
@@ -125,7 +125,7 @@ class Parking {
 	 * como vehiculo tiene un array de plzas (para vehiculos grande)
 	 * hay que recorrer el array y veciar todas las plazas
 	 * se hace con la variable vehiculo.tamanoOcupado porque
-	 * el tamaño que ocupe el vehiculo sera el tamaño del array
+	 * el tamaï¿½o que ocupe el vehiculo sera el tamaï¿½o del array
 	 * y notifica
 	 * @param vehiculo
 	 */
@@ -172,7 +172,7 @@ public class SimulacionParkingCamion {
 		int numPlazas = Integer.parseInt(args[0]);
 		int numCoches = Integer.parseInt(args[1]);
 		int numCamiones = Integer.parseInt(args[2]);
-		int numRepeticionesEntrarParking; // Para que la ejecucion pare alguna vez, si es 0 o null no parará
+		int numRepeticionesEntrarParking; // Para que la ejecucion pare alguna vez, si es 0 o null no pararï¿½
 		int tiempoEsperaEjecucion = 2; // tiempo de espera antes de ejecutar y no especificar el args[2]
 		try {
 			numRepeticionesEntrarParking = Integer.parseInt(args[3]);
@@ -190,12 +190,13 @@ public class SimulacionParkingCamion {
 
 		Parking parking = new Parking(numPlazas);
 
-		for (int i = 0; i < numCoches; i++) {
-			new Coche(i, parking, numRepeticionesEntrarParking, 1, "Coche").start();
-		}
 		for (int i = 0; i < numCamiones; i++) {
 			new Camion(i, parking, numRepeticionesEntrarParking, 2, "Camion").start();
 		}
+		for (int i = 0; i < numCoches; i++) {
+			new Coche(i, parking, numRepeticionesEntrarParking, 1, "Coche").start();
+		}
+		
 
 	}
 }
