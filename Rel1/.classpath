@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Rel1E1/src"/>
+	<classpathentry kind="src" path="Rel1E2Check/src"/>
+	<classpathentry kind="src" path="Rel1E3Relevos/src"/>
+	<classpathentry kind="src" path="Rel1E4Supermercado/src"/>
+	<classpathentry kind="src" path="Rel1E5Supermercado/src"/>
+	<classpathentry kind="src" path="Rel1E6Parking/src"/>
+	<classpathentry kind="src" path="Rel1E7ParkingCamion/src"/>
+	<classpathentry kind="output" path="Rel1E2Check/bin"/>
+</classpath>

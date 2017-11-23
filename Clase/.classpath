@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="HiloProductorConsumidorConBuffer/src"/>
+	<classpathentry kind="src" path="HilosCenaFilosofos/src"/>
+	<classpathentry kind="src" path="HiloSimpleRunnable/src"/>
+	<classpathentry kind="src" path="HilosInterrumpibles/src"/>
+	<classpathentry kind="src" path="HilosJugadoresArbitros/src"/>
+	<classpathentry kind="src" path="HiloSobreFicheroDeTexto/src"/>
+	<classpathentry kind="src" path="HilosSaludoProfesor/src"/>
+	<classpathentry kind="src" path="HilosSentenciasSincronizadas/src"/>
+	<classpathentry kind="src" path="HilosSincronizadosClaseInutil/src"/>
+	<classpathentry kind="src" path="ProcesoAyB/src"/>
+	<classpathentry kind="src" path="RaceCondition/src"/>
+	<classpathentry kind="src" path="RunProcess/src"/>
+	<classpathentry kind="src" path="RunProcessConectados2/src"/>
+	<classpathentry kind="src" path="Semaphore/src"/>
+	<classpathentry kind="output" path="HiloProductorConsumidorConBuffer/bin"/>
+</classpath>
