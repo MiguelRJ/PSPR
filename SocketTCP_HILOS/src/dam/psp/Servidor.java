@@ -6,6 +6,8 @@ import java.net.Socket;
 
 public class Servidor {
 	
+	//Djava.net.preferIpv4Stack=true
+	
 	static final int PUERTO = 5000;
 	
 	public static void main(String[] args) {
@@ -26,9 +28,10 @@ public class Servidor {
 				System.out.println("Atendiendo nuevo cliente: "+nCli);
 				
 				// Creamos un hilo para atender al cliente y asi liberar al socket principal
-				new ServidorHilo(skAtencion,nCli);
+				new ServidorHilo(skAtencion,nCli).start();;
 			}
 		} catch (IOException e) {
+			System.setProperty("java.net.preferIPv4Stack" , "true");
 			e.printStackTrace();
 		}
 		
