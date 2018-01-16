@@ -11,7 +11,7 @@ public class ProcesoAyB {
 	public static void main(String[] args) {
 		
 		// Las rutas de los comando para asegurarnos de que no falle, "whereir ls"
-		ProcessBuilder procesoA = new ProcessBuilder("/bin/ls","-l","/home/usuario");
+		ProcessBuilder procesoA = new ProcessBuilder("/bin/ls","-l","/home/mrj");
 		ProcessBuilder procesoB = new ProcessBuilder("/usr/bin/tr","a","@");
 		
 		try {
