@@ -7,8 +7,9 @@ class Dato {
 		this.dato = 0;
 	}
 	
-	public void incDato() {
+	public synchronized void incDato() {
 		dato++;
+		notify();
 	}
 	
 	public int getDato() {
@@ -37,7 +38,7 @@ class Contador extends Thread{
 public class ContadorSimulacion {
 
 	public static void main(String[] args) {
-		int veces = 5000;
+		int veces = 50000;
 		Dato dato = new Dato();
 		Contador c1 = new Contador(veces, dato);
 		Contador c2 = new Contador(veces, dato);
