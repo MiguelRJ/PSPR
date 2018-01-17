@@ -1,19 +1,20 @@
 package mashilos.mrj;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 class Dato {
-	private int dato;
+	private AtomicInteger dato;
 	
 	public Dato() {
-		this.dato = 0;
+		this.dato = new AtomicInteger();
 	}
 	
-	public synchronized void incDato() {
-		dato++;
-		notify();
+	public void incDato() {
+		dato.incrementAndGet();
 	}
 	
 	public int getDato() {
-		return dato;
+		return dato.get();
 	}
 }
 
