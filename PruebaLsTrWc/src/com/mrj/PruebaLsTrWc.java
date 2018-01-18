@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 
 public class PruebaLsTrWc {
 	public static void main(String[] args) {
-		ProcessBuilder ls = new ProcessBuilder("/bin/ls","-l","/home/mrj");
+		ProcessBuilder ls = new ProcessBuilder("/bin/ls","-l","/home/usuario");
 		ProcessBuilder tr = new ProcessBuilder("/usr/bin/tr","a","@");
 		ProcessBuilder wc = new ProcessBuilder("/usr/bin/wc","-l","-w","-c");
 		
