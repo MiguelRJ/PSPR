@@ -1,16 +1,15 @@
 package com.mrj;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
+import java.util.Random;
 
 public class AlmacenGlobos {
 	
-	private int maxGlobos = 5;
+	private int maxGlobos = 10;
 	private int[] globos = new int[maxGlobos];
 	private int posSiguienteGlobo;
 	private int globosOcupados;
-	
-	private Object mutex = new Object();
-	
+	private Random random = new Random();
+		
 	public AlmacenGlobos() {
 		for (int i = 0; i<maxGlobos; i++) {
 			globos[i] = 0;
@@ -42,10 +41,10 @@ public class AlmacenGlobos {
 
 	
 	/**
-	 * Dice la pos del siguiente globo a entregar
+	 * Dice la pos del siguiente globo a entregar y antes de entregar lo hincha a 1
 	 * @return
 	 */
-	public synchronized int entregarGlobo(String nombre) {
+	public synchronized int entregarGloboParaHinchar(String nombre) {
 		while (globosOcupados >= 3) {
 			System.out.println(nombre+ " Esperando globo...");
 			try {
@@ -57,7 +56,7 @@ public class AlmacenGlobos {
 		}
 		if (posSiguienteGlobo < maxGlobos) {
 			System.out.println("GLOBO "+posSiguienteGlobo+" ENTREGADO A "+nombre);
-			globos[posSiguienteGlobo] = 1;
+			globos[posSiguienteGlobo] = 1 ;
 			globosOcupados++;
 			return posSiguienteGlobo++;
 		} else {
@@ -66,11 +65,32 @@ public class AlmacenGlobos {
 	}
 	
 	/**
-	 * Hincha un globo
+	 * La entrega de globos a pinchar se hara mediante un Ramdom 
+	 * pudiendo enviar un globo que ya este roto o otro que no este hinchado
+	 * tambien podria hacer un while donde compruebe si el globo esta hinchado o no para no enviar uno roto (no recuerdo como era en el examen)
+	 * @param nombre
+	 * @return
+	 */
+	public synchronized int entregarGloboParaPinchar(String nombre) {
+		return random.nextInt(maxGlobos);
+	}
+	
+	/**
+	 * Hincha un globo, el globo viene a 0 y desde el metodo entregarGloboParaHinchar se infla la primera vez
+	 * se pone el ++ antes para mostrar el valor actual,
+	 * si el ++ estuviera al reves pondria que va por el inflado 1 pero en realidad seria un 2 al hacer el ++
 	 * @param pos
 	 */
 	public void hincharGlobo(int pos, String nombre) {
+		//globos[pos]++;
 		System.out.println("GLOBO "+pos+" VOLUMEN "+(globos[pos]++)+" POR "+nombre);
+	}
+	
+	public synchronized void pincharGlobo(int pos, String nombre) {
+		System.out.println("GLOBO "+pos+" PINCHADO POR "+nombre);
+		globosOcupados--;
+		globos[pos] = -1;
+		notifyAll();
 	}
 	
 	public synchronized void explotarGlobo(int pos, String nombre) {
