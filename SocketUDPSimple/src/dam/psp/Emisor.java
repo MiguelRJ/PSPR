@@ -1,4 +1,4 @@
-package com.example;
+package dam.psp;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -11,7 +11,7 @@ public class Emisor {
 	
 	public static final int PuertoEmisor = 5555;
 	public static final int PuertoReceptor = 4444;
-	public static final String IPEmisor = "192.168.255.255"; // 192.168.3.57  // 192.168.3.32
+	public static final String IPEmisor = "192.168.3.57"; // 192.168.3.57  // 192.168.3.32
 	
 	public Emisor() {
 		
@@ -22,7 +22,8 @@ public class Emisor {
 		
 		// Construimos el contenido del mensaje a enviar
 		byte[] contenido = new byte[144];
-		String mensaje = "GLOBO 1 PINCHADO POR PG3";
+		//String mensaje = "GLOBO 1 PINCHADO POR PG3";
+		DatoUDP mensaje = new DatoUDP("GLOBO 1 PINCHADO POR PG3",10);
 		
 		try {
 			
@@ -31,7 +32,8 @@ public class Emisor {
 			
 			emisor = new DatagramSocket(PuertoEmisor,IPLocal); // Por donde sale el mensaje
 			
-			contenido = mensaje.getBytes();
+			//contenido = mensaje.getBytes();
+			contenido = mensaje.ToByteArray();
 			dgp = new DatagramPacket(contenido, contenido.length, IPRemota, PuertoReceptor);
 			
 			emisor.send(dgp);

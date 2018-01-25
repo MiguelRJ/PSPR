@@ -1,4 +1,4 @@
-package com.example;
+package dam.psp;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -30,7 +30,10 @@ public class Receptor {
 				byte[] contenido = dato.getData();
 				System.out.println("de longitud: "+dato.getLength());
 				
-				System.out.println(new String(contenido)); // Deserializamos a String
+				//System.out.println(new String(contenido)); // Deserializamos a String
+				String mensaje = DatoUDP.FromByteArray(contenido).cadenaTexto;
+				int valor = DatoUDP.FromByteArray(contenido).valor;
+				System.out.println("MENSAJE: "+ mensaje + " VALOR: " + valor );
 				
 			}
 			
