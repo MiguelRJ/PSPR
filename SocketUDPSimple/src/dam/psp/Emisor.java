@@ -11,7 +11,7 @@ public class Emisor {
 	
 	public static final int PuertoEmisor = 5555;
 	public static final int PuertoReceptor = 4444;
-	public static final String IPEmisor = "192.168.3.57"; // 192.168.3.57  // 192.168.3.32
+	public static final String IPEmisor = "192.168.3.32"; // 3.57  // 3.32 // 2.27
 	
 	public Emisor() {
 		
