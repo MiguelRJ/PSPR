@@ -2,6 +2,7 @@ package dam.psp;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -33,6 +34,16 @@ public class CirculoServidor implements ICirculo {
 		} catch (RemoteException | AlreadyBoundException e) {
 			e.printStackTrace();
 		} 
+	}
+	
+	public static void main(String[] args) throws RemoteException {
+		final int puerto = 8888;
+		
+		System.setProperty("java.rmi.server.hostname", "192.168.3.32"); // pasar a la maquina de java
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		
+		Registry registry = LocateRegistry.createRegistry(puerto);
+		new CirculoServidor(registry);
 	}
 
 }
