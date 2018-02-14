@@ -13,6 +13,8 @@ public class Cliente {
 	static final String HOST = "192.168.1.132";  // casa -> 1.132; profe -> 3.57; clase -> 3.32
 	static final int PUERTO = 8888;
 	Scanner entrada;
+	static final String salida = ".q";
+	String mensaje;
 	
 	public Cliente() {
 		try {
@@ -24,12 +26,27 @@ public class Cliente {
 			
 			// enviar mensaje pedido por consola al servidor
 			BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in,"utf-8"));
-			System.out.println("Mensaje para enviar?");
-			String mensaje = teclado.readLine();
-			System.out.println("Enviando mensaje al servidor el mensaje: "+mensaje);
-			pw.println(mensaje);
 			
+			
+			do {
+				System.out.print("Operacion: ");
+				mensaje = teclado.readLine();
+				//System.out.println("Enviando: "+mensaje);
+				pw.println(mensaje);
+				
+				do {
+					mensaje = br.readLine();
+					System.out.println(mensaje);
+					if (!mensaje.equals("fin")) {
+						pw.println(teclado.readLine());
+					}
+				} while (!mensaje.equals("fin"));
+				
+			} while (!mensaje.equals(salida));
+			
+			System.out.println("Desconectando...");
 			skCli.close();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

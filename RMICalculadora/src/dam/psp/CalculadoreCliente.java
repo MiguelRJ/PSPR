@@ -7,7 +7,7 @@ import java.rmi.registry.Registry;
 
 public class CalculadoreCliente {
 
-	public static final String servidor = "192.168.3.32";
+	public static final String servidor = "192.168.1.132";  // casa -> 1.132; profe -> 3.57; clase -> 3.32
 	public static final int puerto = 8889;
 
 	public static void main(String[] args) throws RemoteException {
