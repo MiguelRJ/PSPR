@@ -9,18 +9,23 @@ import java.net.Socket;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import com.sun.javafx.geom.transform.BaseTransform;
-
 public class ServidorHilo extends Thread {
-	
+
 	private Socket socket;
-	private int idCliente;
-	String bienvenida;
-	String instrucciones;
-	static final String HOST = "192.168.1.132";  // casa -> 1.132; profe -> 3.57; clase -> 3.32
-	static final int PUERTOCALC = 8889;
-	iCalculadora calculadora = null;
+	//private int idCliente; // no no neceisto porque ya teno clienteName
+	private String ClienteName; // para mostrar el nombre del cliente con formato concreto
+	private String bienvenida;
+	private String instrucciones;
+	private iCalculadora calculadora = null;
+	private float a = 0;
+	private float b = 0;
 	
+	static final String HOST = "192.168.1.132"; // casa -> 1.132; profe -> 3.57; clase -> 3.32
+	static final int PUERTOCALC = 8889;
+	BufferedReader br;
+	PrintWriter pw = null;
+	
+	// instrucciones que realiza la calculadora
 	static final String SUMA = "s";
 	static final String RESTA = "r";
 	static final String PRODUCTO = "p";
@@ -28,63 +33,142 @@ public class ServidorHilo extends Thread {
 	static final String RAIZ = "ra";
 	static final String POTENCIA = "po";
 	static final String SIGUIENTEPRIMO = "sp";
-	float a = 0;
-	float b = 0;
-
-	public ServidorHilo(Socket socket, int idCliente) {	
-		this.socket = socket;
-		this.idCliente = idCliente;
-		this.bienvenida = "Binvenido/a a mi canal";
-		this.instrucciones = "Opciones a calcular: "
-				+ "-Suma("+SUMA+") -Resta("+RESTA+") -Producto("+PRODUCTO+") -Division("+DIVISION+") "
-						+ "-Raiz("+RAIZ+") -Potencia("+POTENCIA+") -SiguientePrimo("+SIGUIENTEPRIMO+")";
-	}
 	
+	// strings usados a la hora de comprobar mensajes entre cliente y servidor
+	static final String salida = "q";
+	static final String RESULTADO = "Resultado operacion";
+	static final String ERROR = "ERROR";
+	
+
+	public ServidorHilo(Socket socket, int idCliente) {
+		this.socket = socket;
+		//this.idCliente = idCliente;
+		this.ClienteName= "Cliente["+idCliente+"]";
+		this.bienvenida = "Binvenido/a a mi canal. ";
+		this.instrucciones = "Opciones a calcular: " +
+				"-Suma(" + SUMA + ") "+
+				"-Resta(" + RESTA + ") "+
+				"-Producto(" + PRODUCTO+ ") "+
+				"-Division(" + DIVISION + ") " +
+				"-Raiz(" + RAIZ + ") "+
+				"-Potencia(" + POTENCIA + ") "+
+				"-SiguientePrimo("+ SIGUIENTEPRIMO + ")";
+	}
+
 	@Override
 	public void run() {
-		//BufferedOutputStream bo;
-		//BufferedInputStream is;
-		BufferedReader br;
-		PrintWriter pw = null;
 		Registry registry = null;
+		String mensajeCliente;
 
 		try {
 			registry = LocateRegistry.getRegistry(HOST, PUERTOCALC);
 			calculadora = (iCalculadora) registry.lookup("Calculadora");
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
-		
+		}
+
 		try {
-			//bo = new BufferedOutputStream(elSocket.getOutputStream());
-			pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"utf-8"),true); // true limpia el buffer para que el canal de comunicacion quede limpio
-			pw.println("Cliente " +idCliente +","+ this.bienvenida+". "+this.instrucciones);
 			
-			// y ahora espera una respuesta en forma de string desde el cliente
-			br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"utf-8"));
+			pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "utf-8"), true); // true limpia el buffer
+			pw.println(ClienteName+", " + this.bienvenida + this.instrucciones);
+			br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
+
+			do {
+				
+				System.out.println(ClienteName+" esperando respuesta... " );
+				mensajeCliente = br.readLine(); 
+				
+				if (!mensajeCliente.equals(salida)) {
+					
+					System.out.print(ClienteName+ " quiere: " + mensajeCliente);
+					
+					if (mensajeCliente.equals(SUMA)) {
+						String clienteInstruccion = ClienteName+" suma("+SUMA+")";
+						
+						System.out.println(clienteInstruccion+" esperando a");
+						pw.println("	"+clienteInstruccion+" dime primer operador: "); 
+						mensajeCliente = br.readLine();
+						while (!floatTryParse(mensajeCliente)) {
+							System.out.println(clienteInstruccion+" esperando, otra vez, a");
+							pw.println("	"+clienteInstruccion+" no numero, VUELVE a indicar primer operador: "); 
+							mensajeCliente = br.readLine();
+						}
+						a = Float.parseFloat(mensajeCliente);
+						
+						
+						System.out.println(clienteInstruccion+" esperando b");
+						pw.println("	"+clienteInstruccion+" dime segundo operador: "); 
+						mensajeCliente = br.readLine();
+						while (!floatTryParse(mensajeCliente)) {
+							System.out.println(clienteInstruccion+" esperando, otra vez, a");
+							pw.println("	"+clienteInstruccion+" no numero, VUELVE a indicar segundo operador: "); 
+							mensajeCliente = br.readLine();
+						}
+						b = Float.parseFloat(mensajeCliente);
+						
+						pw.println("	"+RESULTADO+" de " + a + " + " + b + " = " + calculadora.suma(a, b));
+						System.out.println(clienteInstruccion+" fin.");
+						
+					} else if (mensajeCliente.equals(RESTA)) {
+						String clienteInstruccion = ClienteName+" resta("+RESTA+")";
+						
+						System.out.println(clienteInstruccion+" esperando a");
+						pw.println("	"+clienteInstruccion+" dime primer operador: "); 
+						mensajeCliente = br.readLine();
+						while (!floatTryParse(mensajeCliente)) {
+							System.out.println(clienteInstruccion+" esperando, otra vez, a");
+							pw.println("	"+clienteInstruccion+" no numero, VUELVE a indicar primer operador: "); 
+							mensajeCliente = br.readLine();
+						}
+						a = Float.parseFloat(mensajeCliente);
+						
+						
+						System.out.println(clienteInstruccion+" esperando b");
+						pw.println("	"+clienteInstruccion+" dime segundo operador: "); 
+						mensajeCliente = br.readLine();
+						while (!floatTryParse(mensajeCliente)) {
+							System.out.println(clienteInstruccion+" esperando, otra vez, a");
+							pw.println("	"+clienteInstruccion+" no numero, VUELVE a indicar segundo operador: "); 
+							mensajeCliente = br.readLine();
+						}
+						b = Float.parseFloat(mensajeCliente);
+						
+						pw.println("	"+RESULTADO+" de " + a + " - " + b + " = " + calculadora.resta(a, b));
+						System.out.println(clienteInstruccion+" fin.");
+						
+					} else {
+						pw.println(ERROR+": Opcion "+mensajeCliente+" no disponible.");
+					}
+					
+				}
+				
+			} while (!mensajeCliente.equals(salida));
 			
-			String mensaje = br.readLine();
-			System.out.print("cliente "+idCliente+" quiere: "+mensaje);
-			
-			if (mensaje.equals(SUMA)) {
-				pw.print("Dime primer operador: ");
-				a = Float.parseFloat(br.readLine());
-				pw.print("Dime segundo operador: ");
-				b = Float.parseFloat(br.readLine());
-				pw.println("Resultado de "+a+" + "+b+" = "+calculadora.suma(a, b));
-			}
-			
-			//System.out.println(br.readLine()); // muestra el mensaje del cliente
-			
-			
+			System.out.println(ClienteName+" se ha desconectado.");
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		if (pw != null) {
-			pw.flush(); // Nunca deberia hacer falta esto 
+			pw.flush(); // Nunca deberia hacer falta esto
 			pw.close();
+		}
+	}
+	
+	/**
+	 * Comprueba si un string puede pasarse a float
+	 * @param str, el string que vamos a comprobar
+	 * @return
+	 * true si el string SI se puede pasar a float
+	 * false si NO se puede pasar
+	 */
+	public boolean floatTryParse(String str) {
+		try {
+			Float.parseFloat(str);
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
 	}
 }
