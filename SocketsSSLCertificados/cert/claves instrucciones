@@ -1,0 +1,21 @@
+openssl
+man keytool
+keytool -genkeypair -keystore AlmacenSRV -alias servidor -keyalg RSA -validity 90 -storetype pkcs12
+
+¿Es correcto CN=Miguel Rodriguez Jimenez, OU=mrjapps, O=mrjapps, L=Malaga, ST=Andalucia, C=es?
+
+CN es con lo que se cerrara el candado y tiene que ser de verdad
+
+exportar el certificado
+keytool -export -keystore AlmacenSRV -alias servidor -file servido.cer
+
+pasar la key del cliente al servidor
+keytool -import -keystore AlmacenSRV -file cliente.cer
+
+solucionar error java.util.IllegalFormatConversionException: d != java.lang.String
+keytool -J-Duser.language=en
+
+escirbir certificado en consola
+keytool -printcert -file servido.cer
+
+
