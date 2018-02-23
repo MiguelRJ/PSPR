@@ -72,6 +72,10 @@ public class Srv_SSL {
 	}
 	
 	public static void main(String[] args) throws IOException {
+		System.setProperty("javax.net.ssl.keyStore", "./cert/AlmacenSRV");
+		System.setProperty("javax.net.ssl.keyStorePassword", "1234567890");// esto no debe poner aqui 
+		System.setProperty("javax.net.ssl.trustStore", "./cert/AlmacenSRV");
+		System.setProperty("javax.net.ssl.trustStorePassword", "1234567890");
 		new Srv_SSL();
 	}
 
