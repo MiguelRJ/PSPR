@@ -25,7 +25,7 @@ public class AsymetricRAS {
 		Cipher cifradorRSA = Cipher.getInstance(ALG);
 		cifradorRSA.init(Cipher.DECRYPT_MODE, clave.getPrivate());
 		
-		byte[] mensajeEnBytes = Base64.getDecoder().decode(criptograma.getBytes("utf8")); // deserializo aqui
+		byte[] mensajeEnBytes = Base64.getDecoder().decode(criptograma.getBytes("utf-8")); // deserializo aqui
 		return new String(cifradorRSA.doFinal(mensajeEnBytes)); // descifrar aqui
 	}
 	

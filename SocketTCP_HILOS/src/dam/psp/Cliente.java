@@ -3,7 +3,6 @@ package dam.psp;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -11,15 +10,15 @@ import java.util.Scanner;
 
 public class Cliente {
 	
-	static final String HOST = "192.168.3.57";
+	static final String HOST = "192.168.1.132";
 	static final int PUERTO = 5000;
 	Scanner entrada;
 	
-	private String LeerMensaje() {
+	/*private String LeerMensaje() {
 		System.out.println("Introduce mensaje: ");
 		String mensaje = entrada.nextLine();
 		return mensaje;
-	}
+	}*/
 	
 	public Cliente() {
 		try {

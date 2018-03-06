@@ -42,7 +42,7 @@ public class CifradoAes {
 	}
 	
 	public static void main(String[] args) {
-		String mensaje = "Vaya melÃ³n que tiene CicerÃ³n un viernes por la tarde en el TÃ­volii";
+		String mensaje = "Vaya melón que tiene Cicerón un viernes por la tarde en el Tívoli";
 		String miClave = "123;abc";
 		
 		try {
